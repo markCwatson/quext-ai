@@ -1,7 +1,5 @@
 // This script runs on the web pages defined in manifest.json.
 
-import { send } from 'process';
-
 // \todo: move call to custom api
 const OPENAI_API_KEY =
   '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';
@@ -11,7 +9,12 @@ async function fetchQuiz(
 ): Promise<{ question: string; answer: string }[]> {
   const responses: { question: string; answer: string }[] = [];
 
-  for (const chunk of chunks) {
+  // Shuffle chunks and select up to 5
+  const randomChunks = chunks
+    .sort(() => Math.random() - 0.5)
+    .slice(0, Math.min(5, chunks.length));
+
+  for (const chunk of randomChunks) {
     try {
       const response = await fetch(
         'https://api.openai.com/v1/chat/completions',
@@ -118,7 +121,7 @@ function playAudio(audioData: string): void {
 
 function getPageContent(): string[] {
   const content = document.body.innerText.replace(/\s+/g, ' ').trim();
-  const chunkSize = 10000;
+  const chunkSize = 4000;
   const chunks: string[] = [];
   let currentChunk = '';
 
@@ -135,7 +138,6 @@ function getPageContent(): string[] {
     chunks.push(currentChunk.trim());
   }
 
-  console.log('Content chunks:', chunks);
   return chunks;
 }
 

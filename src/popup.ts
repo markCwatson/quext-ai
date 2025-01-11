@@ -180,66 +180,53 @@ generateQuizBtn?.addEventListener('click', async () => {
   showSpinner();
 
   // For testing purposes
-  generateQuizBtn.style.display = 'block';
-  spinnerEl.style.display = 'none';
-  const questions = [
-    {
-      question: 'The moon is made of cheese.',
-      answer: 'False',
-    },
-    {
-      question: 'The sky is blue.',
-      answer: 'True',
-    },
-  ];
-  responses.push(...questions);
-  numberOfQuestions = responses.length;
-  const next = responses.pop();
-  if (next) showQuestion(next.question, next.answer);
-
-  // const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  // if (!tab || !tab.id) {
-  //   defaultText.innerText = 'Failed to get active tab.';
-  //   return;
-  // }
-
-  // chrome.tabs.sendMessage(
-  //   tab.id,
-  //   { type: 'getPageContent' },
-  //   (contentResponse) => {
-  //     if (!contentResponse || !contentResponse.chunks) {
-  //       defaultText.innerText = 'Failed to fetch page content.';
-  //       return;
-  //     }
-
-  //     try {
-  //       chrome.tabs.sendMessage(
-  //         tab.id!,
-  //         { type: 'generateQuiz', chunks: contentResponse.chunks },
-  //         (quizResponses) => {
-  //           generateQuizBtn.style.display = 'block';
-  //           spinnerEl.style.display = 'none';
-
-  //           if (!quizResponses || quizResponses.length === 0) {
-  //             defaultText.innerText = 'Failed to generate questions.';
-  //             return;
-  //           }
-
-  //           responses.push(...quizResponses);
-
-  //           const next = responses.pop();
-  //           if (next) {
-  //             updatePopup(next.question, next.answer);
-  //           } else {
-  //             defaultText.innerText = 'Failed to load a question.';
-  //           }
-  //         },
-  //       );
-  //     } catch (err) {
-  //       console.error('Error generating quiz:', err);
-  //     }
+  // generateQuizBtn.style.display = 'block';
+  // spinnerEl.style.display = 'none';
+  // const questions = [
+  //   {
+  //     question: 'The moon is made of cheese.',
+  //     answer: 'False',
   //   },
-  // );
+  //   {
+  //     question: 'The sky is blue.',
+  //     answer: 'True',
+  //   },
+  // ];
+  // responses.push(...questions);
+  // numberOfQuestions = responses.length;
+  // const next = responses.pop();
+  // if (next) showQuestion(next.question, next.answer);
+
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (!tab || !tab.id) return;
+
+  chrome.tabs.sendMessage(
+    tab.id,
+    { type: 'getPageContent' },
+    (contentResponse) => {
+      if (!contentResponse || !contentResponse.chunks) return;
+
+      try {
+        chrome.tabs.sendMessage(
+          tab.id!,
+          { type: 'generateQuiz', chunks: contentResponse.chunks },
+          (quizResponses) => {
+            generateQuizBtn.style.display = 'block';
+            spinnerEl.style.display = 'none';
+
+            if (!quizResponses || quizResponses.length === 0) return;
+
+            responses.push(...quizResponses);
+            numberOfQuestions = responses.length;
+            const next = responses.pop();
+            if (next) showQuestion(next.question, next.answer);
+          },
+        );
+      } catch (err) {
+        console.error('Error generating quiz:', err);
+      }
+    },
+  );
 });
 
 init();
