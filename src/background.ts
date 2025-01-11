@@ -16,15 +16,15 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     // First generate the quiz using the content script
     chrome.tabs.sendMessage(
       tab.id,
-      { type: 'generateQuiz', content: info.selectionText.trim() },
-      async (response) => {
-        if (!response || !response.question || !response.answer) {
+      { type: 'generateQuiz', chunks: [info.selectionText.trim()] },
+      async (responses) => {
+        if (!responses || responses.length === 0) {
           console.error('Failed to generate quiz');
           return;
         }
 
         await chrome.storage.local.set({
-          lastGeneratedQuiz: response,
+          lastGeneratedQuiz: responses[0],
         });
 
         // Set a badge to notify user that a question is ready

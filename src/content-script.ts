@@ -7,59 +7,64 @@ const OPENAI_API_KEY =
   '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';
 
 async function fetchQuiz(
-  content: string,
-): Promise<{ question: string; answer: string }> {
-  let data: { choices: { message: { content: string } }[] };
-  let parsed = { question: '', answer: '' };
+  chunks: string[],
+): Promise<{ question: string; answer: string }[]> {
+  const responses: { question: string; answer: string }[] = [];
 
-  try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${OPENAI_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [
-          {
-            role: 'system',
-            content: `You are a helpful quiz generator. 
-                When given some text, generate a single true/false question and the correct answer.
-                Respond in valid JSON with the format:
-                {
-                  "question": "The question here",
-                  "answer": "True" or "False"
-                }
-                Do not include any extra text outside the JSON.`,
+  for (const chunk of chunks) {
+    try {
+      const response = await fetch(
+        'https://api.openai.com/v1/chat/completions',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${OPENAI_API_KEY}`,
           },
-          {
-            role: 'user',
-            content: `Generate a true/false question from this information: ${content}`,
-          },
-        ],
-      }),
-    });
+          body: JSON.stringify({
+            model: 'gpt-4o-mini',
+            messages: [
+              {
+                role: 'system',
+                content: `You are a helpful quiz generator. Generate a single true/false question and answer in JSON format: { "question": "The question", "answer": "True or False" }.`,
+              },
+              {
+                role: 'user',
+                content: `Generate a true/false question from this text: ${chunk}`,
+              },
+            ],
+          }),
+        },
+      );
 
-    data = await response.json();
-  } catch (error) {
-    console.error('Failed to generate quiz from AI:', error);
-    return parsed;
+      if (!response.ok) {
+        throw new Error(
+          `HTTP error! status: ${response.status} ${response.statusText}`,
+        );
+      }
+
+      const data = await response.json();
+      let raw = data.choices?.[0]?.message?.content?.trim();
+
+      if (!raw) {
+        throw new Error('Empty response from OpenAI.');
+      }
+
+      // Sanitize the response to remove backticks or other unwanted characters
+      raw = raw.replace(/```json|```/g, '').trim();
+
+      try {
+        const parsed = JSON.parse(raw);
+        responses.push(parsed);
+      } catch (err) {
+        throw new Error(`Failed to parse JSON: ${raw}`);
+      }
+    } catch (error) {
+      console.error('Error fetching quiz:', error);
+    }
   }
 
-  const raw = data.choices?.[0]?.message?.content?.trim();
-  if (!raw) {
-    console.error('Failed to get AI response:', data);
-    return parsed;
-  }
-
-  try {
-    parsed = JSON.parse(raw);
-  } catch (e) {
-    console.error('Failed to parse AI response as JSON:', raw);
-  }
-
-  return parsed;
+  return responses;
 }
 
 async function fetchAudio(text: string): Promise<void> {
@@ -111,16 +116,35 @@ function playAudio(audioData: string): void {
   };
 }
 
-function getPageContent(): string {
-  return document.body.innerText;
+function getPageContent(): string[] {
+  const content = document.body.innerText.replace(/\s+/g, ' ').trim();
+  const chunkSize = 10000;
+  const chunks: string[] = [];
+  let currentChunk = '';
+
+  content.split('. ').forEach((sentence) => {
+    if (currentChunk.length + sentence.length + 1 <= chunkSize) {
+      currentChunk += sentence + '. ';
+    } else {
+      chunks.push(currentChunk.trim());
+      currentChunk = sentence + '. ';
+    }
+  });
+
+  if (currentChunk.trim()) {
+    chunks.push(currentChunk.trim());
+  }
+
+  console.log('Content chunks:', chunks);
+  return chunks;
 }
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
   if (request.type === 'getPageContent') {
     const content = getPageContent();
-    sendResponse({ content });
-  } else if (request.type === 'generateQuiz' && request.content) {
-    fetchQuiz(request.content).then((response) => sendResponse(response));
+    sendResponse({ chunks: content });
+  } else if (request.type === 'generateQuiz' && request.chunks) {
+    fetchQuiz(request.chunks).then((responses) => sendResponse(responses));
     return true;
   } else if (request.type === 'fetchAudio' && request.text) {
     fetchAudio(request.text)

@@ -12,10 +12,14 @@ const feedback = document.getElementById('feedback')!;
 const scoreEl = document.getElementById('score')!;
 const audioBtn = document.getElementById('play-audio-btn')!;
 const defaultText = document.getElementById('default-text')!;
+const resultContainer = document.getElementById('result-container')!;
+const resultText = document.getElementById('result-text')!;
+const tryAgainBtn = document.getElementById('try-again-btn')!;
 
 let score = 0;
 let numberOfCorrectAnswers = 0;
 let numberOfQuestions = 0;
+let responses: { question: string; answer: string }[] = [];
 
 function playConfetti() {
   confetti({
@@ -28,7 +32,6 @@ function playConfetti() {
 function updateScoreUI() {
   if (numberOfQuestions === 0) {
     scoreEl.textContent = '0 %';
-    // why is this not working? i can't see it.
     questionText.innerText = 'Click "Generate Quiz" to start';
     return;
   }
@@ -48,6 +51,12 @@ function updatePopup(question: any, answer: any) {
   quizContainer.style.display = 'block';
   feedback.innerText = '';
   numberOfQuestions++;
+
+  if (responses.length === 0) {
+    generateQuizBtn.innerText = 'Generate Quiz';
+  } else {
+    generateQuizBtn.innerText = 'Next Question';
+  }
 
   audioBtn.onclick = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -136,33 +145,78 @@ generateQuizBtn?.addEventListener('click', async () => {
   trueBtn.classList.remove('correct');
   falseBtn.classList.remove('correct');
 
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  if (!tab || !tab.id)
-    return console.error('Could not find active tab to fetch page content.');
+  if (responses.length > 0) {
+    const response = responses.pop()!;
+    if (response) {
+      updatePopup(response.question, response.answer);
 
-  chrome.tabs.sendMessage(tab.id, { type: 'getPageContent' }, (response) => {
-    if (!response || !response.content)
-      return console.error('Failed to get page content from content script.');
+      if (responses.length === 0) {
+        quizContainer.style.display = 'none';
+        resultContainer.style.display = 'block';
+        resultText.innerText = `You have answered ${numberOfCorrectAnswers} out of ${
+          numberOfQuestions - 1
+        } questions correctly.`;
 
-    try {
-      chrome.tabs.sendMessage(
-        tab.id!,
-        { type: 'generateQuiz', content: response.content },
-        (response) => {
-          if (!response || !response.question || !response.answer) {
-            questionText.innerText = 'Failed to generate question.';
-            return;
-          }
-
-          updatePopup(response.question, response.answer);
-        },
-      );
-    } catch (err) {
-      console.error('Error generating quiz:', err);
+        tryAgainBtn.onclick = () => {
+          numberOfCorrectAnswers = 0;
+          numberOfQuestions = 0;
+          updateScoreUI();
+          resultContainer.style.display = 'none';
+          defaultText.style.display = 'block';
+          defaultText.innerText = 'Generating a new question...';
+          generateQuizBtn.click();
+        };
+      }
+    } else {
+      defaultText.innerText = 'Failed to load a question.';
     }
-  });
+    return;
+  }
+
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (!tab || !tab.id) {
+    defaultText.innerText = 'Failed to fetch page content.';
+    return;
+  }
+
+  chrome.tabs.sendMessage(
+    tab.id,
+    { type: 'getPageContent' },
+    (contentResponse) => {
+      if (!contentResponse || !contentResponse.chunks) {
+        defaultText.innerText = 'Failed to fetch page content.';
+        return;
+      }
+
+      try {
+        chrome.tabs.sendMessage(
+          tab.id!,
+          { type: 'generateQuiz', chunks: contentResponse.chunks },
+          (quizResponses) => {
+            if (!quizResponses || quizResponses.length === 0) {
+              defaultText.innerText = 'Failed to generate questions.';
+              return;
+            }
+
+            responses.push(...quizResponses);
+
+            const nextQuestion = responses.pop();
+            if (nextQuestion) {
+              updatePopup(nextQuestion.question, nextQuestion.answer);
+            } else {
+              defaultText.innerText = 'Failed to load a question.';
+            }
+          },
+        );
+      } catch (err) {
+        console.error('Error generating quiz:', err);
+      }
+    },
+  );
 });
 
+generateQuizBtn.innerText = 'Generate Quiz';
+resultContainer.style.display = 'none';
 defaultText.style.display = 'block';
 defaultText.innerText = 'Click "Generate Quiz" to start';
 updateScoreUI();

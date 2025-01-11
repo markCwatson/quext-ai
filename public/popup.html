@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <title>Quext AI</title>
-    <!-- Link to our custom stylesheet -->
     <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
@@ -11,13 +10,12 @@
       <img class="logo" src="icons/icon.png" alt="Quext AI Logo" />
       <h1>Quext AI</h1>
 
-      <!-- Score Section -->
       <div class="score-container">
         <h2>Current Score:</h2>
         <p id="score">0</p>
       </div>
 
-      <button id="generate-quiz-btn">Generate Quiz</button>
+      <button id="generate-quiz-btn"></button>
 
       <div id="default-text" ></div>
 
@@ -28,10 +26,14 @@
         <button id="false-btn">False</button>
       </div>
 
+      <div id="result-container">
+        <h2 id="result-text"></h2>
+        <button id="try-again-btn">Try Again</button>
+      </div>
+
       <div id="feedback"></div>
     </div>
 
-    <!-- Your popup logic -->
     <script src="popup.js"></script>
   </body>
 </html>
