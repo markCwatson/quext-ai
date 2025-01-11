@@ -1,11 +1,13 @@
 // This script is loaded in the popup.html
 // It can communicate with the content script or background script to perform actions.
 
+import confetti from 'canvas-confetti';
+
 const generateQuizBtn = document.getElementById('generate-quiz-btn')!;
 const quizContainer = document.getElementById('quiz-container')!;
 const questionText = document.getElementById('question-text')!;
-const trueBtn = document.getElementById('true-btn')!;
-const falseBtn = document.getElementById('false-btn')!;
+const trueBtn = document.getElementById('true-btn') as HTMLButtonElement;
+const falseBtn = document.getElementById('false-btn') as HTMLButtonElement;
 const feedback = document.getElementById('feedback')!;
 const scoreEl = document.getElementById('score')!;
 const audioBtn = document.getElementById('play-audio-btn')!;
@@ -14,6 +16,14 @@ const defaultText = document.getElementById('default-text')!;
 let score = 0;
 let numberOfCorrectAnswers = 0;
 let numberOfQuestions = 0;
+
+function playConfetti() {
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.6 },
+  });
+}
 
 function updateScoreUI() {
   if (numberOfQuestions === 0) {
@@ -65,6 +75,10 @@ function updatePopup(question: any, answer: any) {
       feedback.style.color = 'green';
       feedback.innerText = 'Correct!';
       numberOfCorrectAnswers++;
+      playConfetti();
+      trueBtn.classList.add('correct');
+      trueBtn.disabled = true;
+      falseBtn.disabled = true;
     } else {
       feedback.style.color = 'red';
       feedback.innerText = 'Incorrect. The answer is False.';
@@ -78,6 +92,10 @@ function updatePopup(question: any, answer: any) {
       feedback.style.color = 'green';
       feedback.innerText = 'Correct!';
       numberOfCorrectAnswers++;
+      playConfetti();
+      falseBtn.classList.add('correct');
+      falseBtn.disabled = true;
+      trueBtn.disabled = true;
     } else {
       feedback.style.color = 'red';
       feedback.innerText = 'Incorrect. The answer is True.';
@@ -111,6 +129,12 @@ generateQuizBtn?.addEventListener('click', async () => {
   defaultText.style.display = 'block';
   defaultText.innerText = 'Generating a new question...';
   quizContainer.style.display = 'none';
+
+  // Reset buttons
+  trueBtn.disabled = false;
+  falseBtn.disabled = false;
+  trueBtn.classList.remove('correct');
+  falseBtn.classList.remove('correct');
 
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   if (!tab || !tab.id)

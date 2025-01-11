@@ -7,11 +7,15 @@
     "dev": "webpack --mode development --watch"
   },
   "devDependencies": {
+    "@types/canvas-confetti": "^1.9.0",
     "@types/chrome": "^0.0.293",
     "copy-webpack-plugin": "^12.0.2",
     "ts-loader": "^9.0.0",
     "typescript": "^4.9.0",
     "webpack": "^5.0.0",
     "webpack-cli": "^4.0.0"
+  },
+  "dependencies": {
+    "canvas-confetti": "^1.9.3"
   }
 }

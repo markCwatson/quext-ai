@@ -123,3 +123,22 @@ h1 {
   font-weight: bold;
   min-height: 20px;
 }
+
+@keyframes explode {
+  0% {
+      transform: scale(1);
+      opacity: 1;
+  }
+  50% {
+      transform: scale(1.5);
+      opacity: 0.5;
+  }
+  100% {
+      transform: scale(0);
+      opacity: 0;
+  }
+}
+
+#true-btn.correct {
+  animation: explode 0.8s ease-out forwards;
+}
