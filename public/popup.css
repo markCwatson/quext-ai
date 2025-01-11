@@ -3,7 +3,7 @@ html, body {
   margin: 0;
   padding: 0;
   width: 400px;
-  height: 400px;
+  height: auto;
   font-family: Arial, sans-serif;
   background-color: #f9f9f9;
   box-sizing: border-box;
@@ -12,9 +12,10 @@ html, body {
 .logo {
   display: block;
   margin: 0 auto;
-  margin-top: 20px;
-  width: 25px;
-  height: 25px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 50px;
+  height: 50px;
 }
 
 .popup-container {
@@ -28,6 +29,12 @@ html, body {
   justify-content: flex-start;
 }
 
+.popup-container h1 {
+  margin: 0 0 10px 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
 h1 {
   margin: 0 0 10px 0;
   font-size: 1.2rem;
@@ -36,6 +43,8 @@ h1 {
 
 /* Score styling */
 .score-container {
+  display: flex;
+  align-items: center;
   text-align: center;
   margin-bottom: 10px;
 }
@@ -50,7 +59,7 @@ h1 {
   font-size: 1.5rem;
   color: #007BFF;
   font-weight: bold;
-  margin: 5px 0 0 0;
+  margin: 0 0 0 10px;
 }
 
 /* Generate quiz button */
