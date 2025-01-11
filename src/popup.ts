@@ -9,6 +9,7 @@ const falseBtn = document.getElementById('false-btn')!;
 const feedback = document.getElementById('feedback')!;
 const scoreEl = document.getElementById('score')!;
 const audioBtn = document.getElementById('play-audio-btn')!;
+const defaultText = document.getElementById('default-text')!;
 
 let score = 0;
 let numberOfCorrectAnswers = 0;
@@ -17,6 +18,8 @@ let numberOfQuestions = 0;
 function updateScoreUI() {
   if (numberOfQuestions === 0) {
     scoreEl.textContent = '0 %';
+    // why is this not working? i can't see it.
+    questionText.innerText = 'Click "Generate Quiz" to start';
     return;
   }
 
@@ -30,6 +33,7 @@ function clearFeedback() {
 }
 
 function updatePopup(question: any, answer: any) {
+  defaultText.style.display = 'none';
   questionText.innerText = question;
   quizContainer.style.display = 'block';
   feedback.innerText = '';
@@ -48,9 +52,9 @@ function updatePopup(question: any, answer: any) {
             console.error('No response from fetchAudio');
             return;
           }
-          if (!response.success) {
+
+          if (!response.success)
             console.error('Audio fetch/play failed:', response.error);
-          }
         },
       );
     });
@@ -84,69 +88,28 @@ function updatePopup(question: any, answer: any) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Clear the badge when popup is opened
   chrome.action.setBadgeText({ text: '' });
 
-  // Initialize UI elements to their default states
   quizContainer.style.display = 'none';
-  questionText.textContent = 'Click "Generate Question" to start';
   clearFeedback();
 
-  // Check for stored quiz
   chrome.storage.local.get(['lastGeneratedQuiz'], (result) => {
     if (result.lastGeneratedQuiz) {
       const { question, answer } = result.lastGeneratedQuiz;
 
-      // Get the current tab to pass to updatePopup
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        if (tabs[0]?.id) {
-          updatePopup(question, answer);
-        }
+        if (tabs[0]?.id) updatePopup(question, answer);
       });
 
-      // Clear the stored quiz after displaying it
       chrome.storage.local.remove('lastGeneratedQuiz');
     }
   });
 });
 
-// document.addEventListener('DOMContentLoaded', () => {
-//   console.log('Popup loaded, checking for stored quiz...');
-
-//   // Initialize UI elements to their default states
-//   quizContainer.style.display = 'none';
-//   questionText.textContent = 'Click "Generate Question" to start';
-//   clearFeedback();
-
-//   // Check for stored quiz
-//   chrome.storage.local.get(['lastGeneratedQuiz'], (result) => {
-//     console.log('Storage check result:', result);
-
-//     if (result.lastGeneratedQuiz) {
-//       const { question, answer } = result.lastGeneratedQuiz;
-//       console.log('Found stored quiz:', { question, answer });
-
-//       // Get the current tab to pass to updatePopup
-//       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-//         if (tabs[0]?.id) {
-//           console.log('Updating popup with stored quiz');
-//           updatePopup(question, answer);
-//         }
-//       });
-
-//       // Clear the stored quiz after displaying it
-//       chrome.storage.local.remove('lastGeneratedQuiz', () => {
-//         console.log('Cleared stored quiz');
-//       });
-//     } else {
-//       console.log('No stored quiz found');
-//     }
-//   });
-// });
-
 generateQuizBtn?.addEventListener('click', async () => {
   clearFeedback();
-  questionText.textContent = 'Generating a new question...';
+  defaultText.style.display = 'block';
+  defaultText.innerText = 'Generating a new question...';
   quizContainer.style.display = 'none';
 
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -176,4 +139,6 @@ generateQuizBtn?.addEventListener('click', async () => {
   });
 });
 
+defaultText.style.display = 'block';
+defaultText.innerText = 'Click "Generate Quiz" to start';
 updateScoreUI();
