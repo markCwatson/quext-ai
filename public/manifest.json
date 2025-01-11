@@ -8,7 +8,18 @@
     "default_popup": "popup.html"
   },
 
-  "permissions": ["activeTab", "scripting"],
+  "permissions": [
+    "contextMenus",
+    "activeTab",
+    "clipboardRead",
+    "scripting",
+    "storage"
+  ],
+
+  "host_permissions": [
+    "https://api.streamelements.com/*",
+    "https://api.openai.com/*"
+  ],
 
   "background": {
     "service_worker": "background.js"
