@@ -1,4 +1,3 @@
-/* Make the entire popup 400px by 400px */
 html, body {
   margin: 0;
   padding: 0;
@@ -39,27 +38,25 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  text-align: center;
   margin: 10px;
 }
 
 .result-container h2 {
-  margin: 0;
+  margin-bottom: 10px;
   font-size: 1rem;
   color: #333;
 }
 
 #try-again-btn {
-  display: block;
-  width: 180px;
-  background-color: #05f752;
+  background-color: #007BFF;
+  margin-top: 10px;
   color: #fff;
   border: none;
   border-radius: 4px;
-  padding: 2px;
+  padding: 8px 16px;
   font-size: 0.9rem;
   cursor: pointer;
-  margin-bottom: 10px;
 }
 
 h1 {
@@ -118,7 +115,6 @@ h1 {
   color: #333;
 }
 
-/* True/False buttons */
 #true-btn,
 #false-btn {
   margin: 0 5px;
@@ -143,7 +139,6 @@ h1 {
   background-color: #c82333;
 }
 
-/* Feedback for correct/incorrect answers */
 #feedback {
   margin-top: 15px;
   text-align: center;
@@ -157,15 +152,87 @@ h1 {
       opacity: 1;
   }
   50% {
-      transform: scale(1.5);
+      transform: scale(2);
       opacity: 0.5;
   }
   100% {
-      transform: scale(0);
+      transform: scale(4);
       opacity: 0;
   }
 }
 
 #true-btn.correct {
-  animation: explode 0.8s ease-out forwards;
+  animation: explode 0.2s ease-out forwards;
+}
+
+#false-btn.correct {
+  animation: explode 0.2s ease-out forwards;
+}
+
+#html-spinner{
+  width:40px;
+  height:40px;
+  border:4px solid #fcd779;
+  border-top:4px solid white;
+  border-radius:50%;
+}
+
+#html-spinner, #svg-spinner{
+  -webkit-transition-property: -webkit-transform;
+  -webkit-transition-duration: 1.2s;
+  -webkit-animation-name: rotate;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+  
+  -moz-transition-property: -moz-transform;
+  -moz-animation-name: rotate; 
+  -moz-animation-duration: 1.2s; 
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-timing-function: linear;
+  
+  transition-property: transform;
+  animation-name: rotate; 
+  animation-duration: 1.2s; 
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+@-webkit-keyframes rotate {
+    from {-webkit-transform: rotate(0deg);}
+    to {-webkit-transform: rotate(360deg);}
+}
+
+@-moz-keyframes rotate {
+    from {-moz-transform: rotate(0deg);}
+    to {-moz-transform: rotate(360deg);}
+}
+
+@keyframes rotate {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+}
+
+#html-spinner, #svg-spinner{
+  display: none;
+  position: relative;
+}
+
+#html-spinner{
+  left: 25%; 
+}
+
+#svg-spinner{
+  left: 75%; 
+}
+
+#html-para, #svg-para{
+  position: absolute;
+  top: 100px;
+  width: 40%;
+  padding: 5%;
+  text-align: center;
+}
+
+#svg-para{
+  left: 50%;
 }

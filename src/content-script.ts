@@ -26,11 +26,11 @@ async function fetchQuiz(
             messages: [
               {
                 role: 'system',
-                content: `You are a helpful quiz generator. Generate a single true/false question and answer in JSON format: { "question": "The question", "answer": "True or False" }.`,
+                content: `You are a helpful quiz generator. Generate a single true or false question and answer in JSON format: { "question": "The question", "answer": "True or False" }.`,
               },
               {
                 role: 'user',
-                content: `Generate a true/false question from this text: ${chunk}`,
+                content: `Reword this text and generate a true or false question: ${chunk}`,
               },
             ],
           }),
