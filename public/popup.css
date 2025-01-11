@@ -9,7 +9,6 @@ html, body {
   box-sizing: border-box;
 }
 
-/* Container for all content */
 .popup-container {
   width: 100%;
   height: 100%;
@@ -21,20 +20,37 @@ html, body {
   justify-content: flex-start;
 }
 
-/* Page title */
 h1 {
-  margin: 0;
-  margin-bottom: 15px;
+  margin: 0 0 10px 0;
   font-size: 1.2rem;
   color: #333;
 }
 
-/* The main "Generate Quiz" button */
+/* Score styling */
+.score-container {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.score-container h2 {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+#score {
+  font-size: 1.5rem;
+  color: #007BFF;
+  font-weight: bold;
+  margin: 5px 0 0 0;
+}
+
+/* Generate quiz button */
 #generate-quiz-btn {
   display: block;
   width: 180px;
   background-color: #007BFF;
-  color: #ffffff;
+  color: #fff;
   border: none;
   border-radius: 4px;
   padding: 10px;
@@ -46,14 +62,12 @@ h1 {
   background-color: #0056b3;
 }
 
-/* Container for the generated question */
+/* Quiz container, hidden until we have a question */
 #quiz-container {
   text-align: center;
-  display: none; /* hidden until we have a question */
-  flex-direction: column;
+  display: none;
 }
 
-/* The question text */
 #question-text {
   font-size: 1rem;
   margin-bottom: 15px;
@@ -64,8 +78,8 @@ h1 {
 #true-btn,
 #false-btn {
   margin: 0 5px;
-  background-color: #28A745; /* Green for True */
-  color: #ffffff;
+  background-color: #28a745; /* Green for True by default */
+  color: #fff;
   border: none;
   border-radius: 4px;
   padding: 8px 16px;
@@ -77,16 +91,15 @@ h1 {
   background-color: #218838;
 }
 
-/* Red for the False button */
 #false-btn {
-  background-color: #DC3545;
+  background-color: #dc3545; /* Red for False */
 }
 
 #false-btn:hover {
   background-color: #c82333;
 }
 
-/* Feedback area (correct/incorrect) */
+/* Feedback for correct/incorrect answers */
 #feedback {
   margin-top: 15px;
   text-align: center;

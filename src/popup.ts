@@ -1,18 +1,18 @@
 // This script is loaded in the popup.html
 // It can communicate with the content script or background script to perform actions.
 
-const generateQuizBtn = document.getElementById(
-  'generate-quiz-btn',
-) as HTMLButtonElement;
-const quizContainer = document.getElementById(
-  'quiz-container',
-) as HTMLDivElement;
-const questionText = document.getElementById(
-  'question-text',
-) as HTMLParagraphElement;
-const trueBtn = document.getElementById('true-btn') as HTMLButtonElement;
-const falseBtn = document.getElementById('false-btn') as HTMLButtonElement;
-const feedback = document.getElementById('feedback') as HTMLDivElement;
+const generateQuizBtn = document.getElementById('generate-quiz-btn')!;
+const quizContainer = document.getElementById('quiz-container')!;
+const questionText = document.getElementById('question-text')!;
+const trueBtn = document.getElementById('true-btn')!;
+const falseBtn = document.getElementById('false-btn')!;
+const feedback = document.getElementById('feedback')!;
+const scoreEl = document.getElementById('score')!;
+
+// Track the score
+let score = 0;
+let numberOfCorrectAnswers = 0;
+let numberOfQuestions = 0;
 
 // \todo: move call to custom api
 const OPENAI_API_KEY =
@@ -64,14 +64,31 @@ async function generateQuizFromAI(
     console.error('Failed to parse AI response as JSON:', raw);
   }
 
-  return parsed; // {question, answer}
+  return parsed;
+}
+
+function updateScoreUI() {
+  if (numberOfQuestions === 0) {
+    scoreEl.textContent = '0 %';
+    return;
+  }
+
+  score = Math.floor((numberOfCorrectAnswers / numberOfQuestions) * 100);
+  scoreEl.textContent = score.toString() + ' %';
+}
+
+function clearFeedback() {
+  feedback.innerHTML = '';
+  feedback.style.color = '#333';
 }
 
 generateQuizBtn?.addEventListener('click', async () => {
-  // Example: send a message to the content script to fetch page content
-  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  clearFeedback();
+  questionText.textContent = 'Generating a new question...';
+  quizContainer.style.display = 'none';
 
-  if (!tab.id)
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (!tab || !tab.id)
     return console.error('Could not find active tab to fetch page content.');
 
   chrome.tabs.sendMessage(
@@ -83,33 +100,38 @@ generateQuizBtn?.addEventListener('click', async () => {
 
       try {
         const { question, answer } = await generateQuizFromAI(response.content);
-        console.log('Question:', question);
-        console.log('Answer:', answer);
 
         // Show question in the popup
         questionText.innerText = question;
         quizContainer.style.display = 'block';
         feedback.innerText = ''; // Clear old feedback
+        numberOfQuestions++;
 
         // Listen for user clicks
         trueBtn.onclick = () => {
           if (answer.toLowerCase() === 'true') {
             feedback.style.color = 'green';
             feedback.innerText = 'Correct!';
+            numberOfCorrectAnswers++;
           } else {
             feedback.style.color = 'red';
             feedback.innerText = 'Incorrect. The answer is False.';
           }
+
+          updateScoreUI();
         };
 
         falseBtn.onclick = () => {
           if (answer.toLowerCase() === 'false') {
             feedback.style.color = 'green';
             feedback.innerText = 'Correct!';
+            numberOfCorrectAnswers++;
           } else {
             feedback.style.color = 'red';
             feedback.innerText = 'Incorrect. The answer is True.';
           }
+
+          updateScoreUI();
         };
       } catch (err) {
         console.error('Error generating quiz:', err);
@@ -117,3 +139,5 @@ generateQuizBtn?.addEventListener('click', async () => {
     },
   );
 });
+
+updateScoreUI();
