@@ -1,15 +1,26 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <title>Quext AI</title>
-    <link rel="stylesheet" href="styles.css" />
+    <!-- Link to our custom stylesheet -->
+    <link rel="stylesheet" href="popup.css" />
   </head>
   <body>
-    <h1>Quext AI</h1>
-    <button id="generate-quiz-btn">Generate Quiz</button>
+    <div class="popup-container">
+      <h1>Quext AI</h1>
+      <button id="generate-quiz-btn">Generate Quiz</button>
 
-    <!-- We'll load the compiled popup.js here (added automatically by our bundler) -->
+      <div id="quiz-container">
+        <p id="question-text"></p>
+        <button id="true-btn">True</button>
+        <button id="false-btn">False</button>
+      </div>
+
+      <div id="feedback"></div>
+    </div>
+
+    <!-- Your popup logic -->
     <script src="popup.js"></script>
   </body>
 </html>

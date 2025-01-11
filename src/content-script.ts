@@ -10,8 +10,13 @@ function getPageContent(): string {
 
 // Listen for messages from the popup or background service worker (if needed)
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.command === 'getPageContent') {
-    const content = getPageContent();
-    sendResponse({ content });
-  }
+  console.log('Message received in content script:', request);
+  if (request.command !== 'getPageContent')
+    return console.error(
+      'Invalid command received in content script:',
+      request.command,
+    );
+
+  const content = getPageContent();
+  sendResponse({ content });
 });
