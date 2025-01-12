@@ -10,13 +10,7 @@
 
   "options_page": "options.html",
 
-  "permissions": [
-    "contextMenus",
-    "activeTab",
-    "clipboardRead",
-    "scripting",
-    "storage"
-  ],
+  "permissions": ["contextMenus", "activeTab", "scripting", "storage"],
 
   "host_permissions": [
     "https://api.streamelements.com/*",
