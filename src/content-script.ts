@@ -13,6 +13,7 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
       if (data.apiKey && data.model) {
         QuizGenerator.setModel(data.model);
         QuizGenerator.setApiKey(data.apiKey);
+        // \note: use QuizGenerator.fetchQuizMock for testing, if needed
         QuizGenerator.fetchQuiz(request.chunks).then((responses) =>
           sendResponse(responses),
         );
