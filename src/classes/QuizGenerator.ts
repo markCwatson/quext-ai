@@ -1,9 +1,11 @@
 class QuizGenerator {
-  // \todo: move call to custom api
+  // note: this key is invalid (was used for development but I deleted it)
+  // never hardcode sensitive information in your code
+  // also, for chrome extensions, maybe the call to open ai should happen in a custom server ??
   private static _key =
     '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';
 
-  // for testing
+  // for testing to avoid calling the open ai api too much
   static fetchQuizMock(
     chunks: string[],
   ): Promise<{ question: string; answer: string }[]> {
