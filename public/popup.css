@@ -49,6 +49,39 @@ html, body {
   cursor: pointer;
 }
 
+@keyframes sparkle {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+    filter: brightness(1);
+  }
+  25% {
+    transform: scale(1.1) rotate(3deg);
+    opacity: 0.95;
+    filter: brightness(1.05);
+  }
+  50% {
+    transform: scale(1.1) rotate(-3deg);
+    opacity: 1;
+    filter: brightness(1.1);
+  }
+  75% {
+    transform: scale(1.1) rotate(3deg);
+    opacity: 0.975;
+    filter: brightness(1.05);
+  }
+}
+
+.logo {
+  display: block;
+  margin: 0 auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 50px;
+  height: 50px;
+  animation: sparkle 2s infinite ease-in-out;
+}
+
 .logo {
   display: block;
   margin: 0 auto;
@@ -70,20 +103,25 @@ html, body {
 }
 
 .popup-container h1 {
-  margin: 0 0 10px 0;
-  font-size: 1.2rem;
-  color: #333;
+  margin-bottom: 12px;
+  font-size: 1.5rem;
+  color: #007BFF;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.5px;
 }
 
-.result-container {
+#result-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  justify-content: center;
   margin: 10px;
 }
 
-.result-container h2 {
+#result-container h2 {
   margin-bottom: 10px;
   font-size: 1rem;
   color: #333;
@@ -111,13 +149,12 @@ h1 {
   display: flex;
   align-items: center;
   text-align: center;
-  margin-bottom: 10px;
+  justify-content: center;
 }
 
 .score-container h2 {
-  margin: 0;
   font-size: 1rem;
-  color: #333;
+  color: #007BFF;
 }
 
 #score {
@@ -127,7 +164,6 @@ h1 {
   margin: 0 0 0 10px;
 }
 
-/* Generate quiz button */
 #generate-quiz-btn {
   display: block;
   width: 180px;
@@ -138,13 +174,12 @@ h1 {
   padding: 10px;
   font-size: 0.9rem;
   cursor: pointer;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 #generate-quiz-btn:hover {
   background-color: #0056b3;
 }
 
-/* Quiz container, hidden until we have a question */
 #quiz-container {
   text-align: center;
   display: none;
@@ -178,6 +213,23 @@ h1 {
 
 #false-btn:hover {
   background-color: #c82333;
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  50% { transform: translateX(6px); }
+  75% { transform: translateX(-6px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes drop {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+button.wrong-answer {
+  animation: shake 0.4s ease;
 }
 
 #feedback {

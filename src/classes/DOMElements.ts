@@ -18,6 +18,7 @@ class DOMElements {
   static optionsPrompt = document.getElementById('setup-container')!;
   static clearBtn = document.getElementById('clear')!;
   static openOptionsBtn = document.getElementById('open-options-btn');
+  static resultContainer = document.getElementById('result-container')!;
 }
 
 export default DOMElements;
