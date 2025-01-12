@@ -10,27 +10,37 @@
       <img class="logo" src="icons/icon.png" alt="Quext AI Logo" />
       <h1>Quext AI</h1>
 
-      <div class="score-container">
-        <h2 id="score-text"></h2>
-        <p id="score">0</p>
+      <div id="setup-container">
+        <h2>Setup is required...</h2>
+        <h3>Right-click the extension icon and select "Options" or click the "Open Options" button below.</h3>
+        <h3>Go to the options page to set up your OpenAI API key and select a model (uses gpt-4o-mini by default).</h3>
+        <h2>They key is not stored or shared with anyone.</h2>
+        <button id="open-options-btn">Open Options</button>
       </div>
 
-      <button id="generate-quiz-btn"></button>
-      <div id="html-spinner"></div>
+      <div id="quiz-app-container">
+        <div class="score-container">
+          <h2 id="score-text"></h2>
+          <p id="score">0</p>
+        </div>
 
-      <div id="quiz-container">
-        <p id="question-text"></p>
-        <button id="play-audio-btn">Play Audio</button>
-        <button id="true-btn">True</button>
-        <button id="false-btn">False</button>
+        <button id="generate-quiz-btn"></button>
+        <div id="html-spinner"></div>
+
+        <div id="quiz-container">
+          <p id="question-text"></p>
+          <button id="play-audio-btn">Play Audio</button>
+          <button id="true-btn">True</button>
+          <button id="false-btn">False</button>
+        </div>
+
+        <div class="result-container">
+          <h2 id="result-text"></h2>
+          <button id="try-again-btn">Try Again</button>
+        </div>
+
+        <div id="feedback"></div>
       </div>
-
-      <div class="result-container">
-        <h2 id="result-text"></h2>
-        <button id="try-again-btn">Try Again</button>
-      </div>
-
-      <div id="feedback"></div>
     </div>
 
     <script src="popup.js"></script>

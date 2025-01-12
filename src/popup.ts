@@ -3,20 +3,38 @@
 // It contains event handlers for the UI elements.
 
 import DOMElements from './classes/DOMElements';
+import QuizGenerator from './classes/QuizGenerator';
 import QuizState from './classes/QuizState';
 import QuizUI from './classes/QuizUI';
 
 document.addEventListener('DOMContentLoaded', () => {
-  chrome.action.setBadgeText({ text: '' });
+  chrome.storage.sync.get(['apiKey', 'model'], (data) => {
+    if (data.apiKey && data.model) {
+      QuizState.init();
+      QuizUI.init();
+      return;
+    }
+
+    if (!QuizGenerator.apikey || QuizGenerator.apikey === '') {
+      QuizUI.showOptionsPrompt();
+    }
+  });
 
   chrome.storage.local.get(['lastGeneratedQuiz'], (result) => {
-    if (result.lastGeneratedQuiz) {
-      const { question, answer } = result.lastGeneratedQuiz;
-      QuizState.responses.push({ question, answer });
-      QuizState.numberOfQuestions = 1;
+    chrome.action.setBadgeText({ text: '' });
 
+    if (result.lastGeneratedQuiz) {
+      QuizState.addResponses([result.lastGeneratedQuiz]);
       chrome.storage.local.remove('lastGeneratedQuiz');
       DOMElements.generateQuizBtn.click();
+    }
+  });
+});
+
+DOMElements.openOptionsBtn?.addEventListener('click', () => {
+  chrome.runtime.openOptionsPage(() => {
+    if (chrome.runtime.lastError) {
+      alert('Failed to open options page.');
     }
   });
 });
@@ -32,7 +50,7 @@ DOMElements.generateQuizBtn?.addEventListener('click', async () => {
   }
 
   if (QuizState.numberOfQuestions > 0) {
-    const next = QuizState.responses.pop()!;
+    const next = QuizState.popResponse();
     if (next) QuizUI.showQuestion(next.question, next.answer);
     return;
   }
@@ -57,18 +75,14 @@ DOMElements.generateQuizBtn?.addEventListener('click', async () => {
 
             if (!quizResponses || quizResponses.length === 0) return;
 
-            QuizState.responses.push(...quizResponses);
-            QuizState.numberOfQuestions = QuizState.responses.length;
-            const next = QuizState.responses.pop();
+            QuizState.addResponses(quizResponses);
+            const next = QuizState.popResponse();
             if (next) QuizUI.showQuestion(next.question, next.answer);
           },
         );
       } catch (err) {
-        console.error('Error generating quiz:', err);
+        alert('Error generating quiz:');
       }
     },
   );
 });
-
-QuizState.init();
-QuizUI.init();

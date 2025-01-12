@@ -8,6 +8,47 @@ html, body {
   box-sizing: border-box;
 }
 
+#quiz-app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+#setup-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+#setup-container h2 {
+  font-size: 1rem;
+  color: #007BFF;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#setup-container h3 {
+  font-size: 0.8rem;
+  color: #444;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#open-options-btn {
+  background-color: #007BFF;
+  margin-top: 10px;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
 .logo {
   display: block;
   margin: 0 auto;
@@ -167,14 +208,6 @@ h1 {
 
 #false-btn.correct {
   animation: explode 0.2s ease-out forwards;
-}
-
-.popup-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
 }
 
 #html-spinner {

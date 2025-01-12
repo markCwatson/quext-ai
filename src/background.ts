@@ -13,7 +13,6 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     info.selectionText.trim() !== '' &&
     tab?.id
   ) {
-    // First generate the quiz using the content script
     chrome.tabs.sendMessage(
       tab.id,
       { type: 'generateQuiz', chunks: [info.selectionText.trim()] },
@@ -27,7 +26,6 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
           lastGeneratedQuiz: responses[0],
         });
 
-        // Set a badge to notify user that a question is ready
         chrome.action.setBadgeText({ text: '1' });
         chrome.action.setBadgeBackgroundColor({ color: '#4CAF50' });
       },

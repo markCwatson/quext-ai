@@ -1,10 +1,13 @@
-import DOMElements from './DOMElements';
+export interface IQuestionAndAnswer {
+  question: string;
+  answer: string;
+}
 
 class QuizState {
   static score: number;
   static numberOfCorrectAnswers: number;
   static numberOfQuestions: number;
-  static responses: { question: string; answer: string }[];
+  static responses: IQuestionAndAnswer[];
 
   static init() {
     this.score = 0;
@@ -22,6 +25,15 @@ class QuizState {
   static incrementScore() {
     this.numberOfCorrectAnswers++;
     this.updateScore();
+  }
+
+  static addResponses(responses: IQuestionAndAnswer[]) {
+    this.responses.push(...responses);
+    this.numberOfQuestions = this.responses.length;
+  }
+
+  static popResponse() {
+    return this.responses.pop();
   }
 }
 

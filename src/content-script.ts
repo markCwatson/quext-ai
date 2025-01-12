@@ -9,9 +9,15 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
     const content = ContentExtractor.getPageContent();
     sendResponse({ chunks: content });
   } else if (request.type === 'generateQuiz' && request.chunks) {
-    QuizGenerator.fetchQuiz(request.chunks).then((responses) =>
-      sendResponse(responses),
-    );
+    chrome.storage.sync.get(['apiKey', 'model'], (data) => {
+      if (data.apiKey && data.model) {
+        QuizGenerator.setModel(data.model);
+        QuizGenerator.setApiKey(data.apiKey);
+        QuizGenerator.fetchQuiz(request.chunks).then((responses) =>
+          sendResponse(responses),
+        );
+      }
+    });
     return true;
   } else if (request.type === 'fetchAudio' && request.text) {
     AudioHandler.fetchAudio(request.text)
@@ -21,6 +27,11 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
       .catch((err) => {
         sendResponse({ success: false, error: err.message || String(err) });
       });
+    return true;
+  } else if (request.type === 'getApiSettings') {
+    chrome.storage.sync.get(['apiKey', 'model'], (data) => {
+      sendResponse(data);
+    });
     return true;
   }
 });

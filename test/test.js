@@ -37,14 +37,14 @@ async function generateQuizFromAI(content) {
   let parsed = { question: '', answer: '' };
   const raw = data.choices?.[0]?.message?.content?.trim();
   if (!raw) {
-    console.error('Failed to get AI response:', data);
+    alert('Failed to get AI response:', data);
     return parsed;
   }
 
   try {
     parsed = JSON.parse(raw);
   } catch (e) {
-    console.error('Failed to parse AI response as JSON:', raw);
+    alert('Failed to parse AI response as JSON:', raw);
   }
 
   return parsed; // {question, answer}

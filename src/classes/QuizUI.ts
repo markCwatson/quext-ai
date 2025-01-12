@@ -4,6 +4,9 @@ import QuizState from './QuizState';
 
 class QuizUI {
   static init() {
+    DOMElements.quizAppContainer.style.display = 'flex';
+    DOMElements.optionsPrompt.style.display = 'none';
+
     DOMElements.generateQuizBtn.innerText = 'Generate Quiz';
     DOMElements.resultText.style.display = 'none';
     DOMElements.tryAgainBtn.style.display = 'none';
@@ -11,12 +14,9 @@ class QuizUI {
     DOMElements.scoreText.style.display = 'none';
   }
 
-  static playConfetti() {
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-    });
+  static showOptionsPrompt() {
+    DOMElements.optionsPrompt.style.display = 'block';
+    DOMElements.quizAppContainer.style.display = 'none';
   }
 
   static showAsCorrectByButton(btn: HTMLButtonElement) {
@@ -101,7 +101,7 @@ class QuizUI {
           { type: 'fetchAudio', text: question },
           (response) => {
             if (!response || !response.success)
-              console.error('No response from fetchAudio');
+              alert('No response from fetchAudio');
           },
         );
       });
@@ -124,6 +124,14 @@ class QuizUI {
       QuizState.updateScore();
       this.updateScoreUi();
     };
+  }
+
+  static playConfetti() {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+    });
   }
 }
 

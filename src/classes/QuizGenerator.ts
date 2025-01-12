@@ -1,9 +1,18 @@
 class QuizGenerator {
-  // note: this key is invalid (was used for development but I deleted it)
-  // never hardcode sensitive information in your code
-  // also, for chrome extensions, maybe the call to open ai should happen in a custom server ??
-  private static _key =
-    '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';
+  static get DEFAULT_MODEL(): string {
+    return 'gpt-4o-mini';
+  }
+
+  static apikey: string | null = null;
+  static model: string = this.DEFAULT_MODEL;
+
+  static setApiKey(apikey: string | null): void {
+    this.apikey = apikey;
+  }
+
+  static setModel(model: string): void {
+    this.model = model;
+  }
 
   // for testing to avoid calling the open ai api too much
   static fetchQuizMock(
@@ -28,10 +37,17 @@ class QuizGenerator {
   ): Promise<{ question: string; answer: string }[]> {
     const responses: { question: string; answer: string }[] = [];
 
+    if (!this.apikey) {
+      alert('API key not set! Go to the options page to set it.');
+      return responses;
+    }
+
     // Shuffle chunks and select up to 5
     const randomChunks = chunks
       .sort(() => Math.random() - 0.5)
       .slice(0, Math.min(5, chunks.length));
+
+    const answer = Math.random() < 0.5 ? 'True' : 'False';
 
     for (const chunk of randomChunks) {
       try {
@@ -41,14 +57,14 @@ class QuizGenerator {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${QuizGenerator._key}`,
+              Authorization: `Bearer ${this.apikey}`,
             },
             body: JSON.stringify({
-              model: 'gpt-4o-mini',
+              model: this.model || this.DEFAULT_MODEL,
               messages: [
                 {
                   role: 'system',
-                  content: `You are a helpful quiz generator. Generate a single true or false question and answer in JSON format: { "question": "The question", "answer": "True or False" }. You can change the wording however you see fit making it either true or false. It is preferred if you do not simply repeat the text.`,
+                  content: `You are a helpful quiz generator. Generate a single true or false question and answer in JSON format like this: { "question": "The question", "answer": "True or False" }. You can change the wording however you see fit: do not simply repeat the text. Generate the question such that the answer is "${answer}".`,
                 },
                 {
                   role: 'user',
@@ -82,7 +98,7 @@ class QuizGenerator {
           throw new Error(`Failed to parse JSON: ${raw}`);
         }
       } catch (error) {
-        console.error('Error fetching quiz:', error);
+        alert('Error fetching quiz:');
       }
     }
 

@@ -40,7 +40,7 @@ class AudioHandler {
     let audioUrl = URL.createObjectURL(audioBlob);
 
     let audio = new Audio(audioUrl);
-    audio.play().catch((err) => console.error('Audio playback error:', err));
+    audio.play().catch((err) => alert('Audio playback error:'));
 
     // Clean up the URL after playback
     audio.onended = () => {
