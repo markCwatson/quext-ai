@@ -14,7 +14,7 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
         QuizGenerator.setModel(data.model);
         QuizGenerator.setApiKey(data.apiKey);
         // \note: use QuizGenerator.fetchQuizMock for testing, if needed
-        QuizGenerator.fetchQuizMock(request.chunks).then((responses) =>
+        QuizGenerator.fetchQuiz(request.chunks).then((responses) =>
           sendResponse(responses),
         );
       }
