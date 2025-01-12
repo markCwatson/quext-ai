@@ -1,6 +1,6 @@
 # Quext AI
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/KLeJqN5R7Aw?si=rYtAdWp3ybUhagTX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+[![Everything Is AWESOME](img/youtube.png)](https://www.youtube.com/watch?v=KLeJqN5R7Aw 'Quext AI chrome extension demo')
 
 **Idea:**  
 A Chrome extension that uses AI to automatically create a short quiz based on the web page the user is reading. This helps readers self-test their understanding of the material.
