@@ -78,4 +78,8 @@ echo "Create a new git tag $tag"
 git tag -a $tag
 git push origin $tag
 
+# zip contents of dist folder to release folder
+echo "Create a new release archive"
+zip -r ./release/$tag.zip ./dist
+
 echo "Release process completed"
