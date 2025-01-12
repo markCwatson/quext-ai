@@ -1,6 +1,6 @@
 # Quext AI
 
-![alt-text][1]
+<iframe width="560" height="315" src="https://www.youtube.com/embed/KLeJqN5R7Aw?si=rYtAdWp3ybUhagTX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 **Idea:**  
 A Chrome extension that uses AI to automatically create a short quiz based on the web page the user is reading. This helps readers self-test their understanding of the material.
@@ -12,5 +12,3 @@ A Chrome extension that uses AI to automatically create a short quiz based on th
 3. **Quiz Presentation:** The extension displays the quiz in a popup or side panel.
 4. **Feedback:** After the user submits answers, the user receives immediate feedback and the final score is presented when all questions are done.
 5. **Audio Playback:** User can listen to the question using text-to-speak technology.
-
-[1]: gif/quext-demo.gif 'Quext AI demo'
