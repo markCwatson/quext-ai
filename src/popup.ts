@@ -9,20 +9,14 @@ import QuizUI from './classes/QuizUI';
 document.addEventListener('DOMContentLoaded', () => {
   chrome.action.setBadgeText({ text: '' });
 
-  DOMElements.quizContainer.style.display = 'none';
-  QuizUI.clearFeedback();
-
   chrome.storage.local.get(['lastGeneratedQuiz'], (result) => {
     if (result.lastGeneratedQuiz) {
       const { question, answer } = result.lastGeneratedQuiz;
       QuizState.responses.push({ question, answer });
       QuizState.numberOfQuestions = 1;
 
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        if (tabs[0]?.id) DOMElements.generateQuizBtn.click();
-      });
-
       chrome.storage.local.remove('lastGeneratedQuiz');
+      DOMElements.generateQuizBtn.click();
     }
   });
 });
@@ -59,8 +53,7 @@ DOMElements.generateQuizBtn?.addEventListener('click', async () => {
           tab.id!,
           { type: 'generateQuiz', chunks: contentResponse.chunks },
           (quizResponses) => {
-            DOMElements.generateQuizBtn.style.display = 'block';
-            DOMElements.spinnerEl.style.display = 'none';
+            QuizUI.hideSpinner();
 
             if (!quizResponses || quizResponses.length === 0) return;
 
@@ -79,4 +72,3 @@ DOMElements.generateQuizBtn?.addEventListener('click', async () => {
 
 QuizState.init();
 QuizUI.init();
-QuizState.updateScore();

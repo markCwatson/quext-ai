@@ -9,7 +9,7 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
     const content = ContentExtractor.getPageContent();
     sendResponse({ chunks: content });
   } else if (request.type === 'generateQuiz' && request.chunks) {
-    QuizGenerator.fetchQuizMock(request.chunks).then((responses) =>
+    QuizGenerator.fetchQuiz(request.chunks).then((responses) =>
       sendResponse(responses),
     );
     return true;

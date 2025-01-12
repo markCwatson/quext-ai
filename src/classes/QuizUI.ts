@@ -51,6 +51,11 @@ class QuizUI {
     DOMElements.spinnerEl.style.display = 'block';
   }
 
+  static hideSpinner() {
+    DOMElements.generateQuizBtn.style.display = 'block';
+    DOMElements.spinnerEl.style.display = 'none';
+  }
+
   static showBusyMessage() {
     DOMElements.quizContainer.style.display = 'none';
   }
