@@ -59,10 +59,12 @@ if [ "$answer" != "y" ] && [ "$answer" != "Y" ]; then
   exit 0
 fi
 
-# set new node package version
-echo "Replace version in package.json"
+# set new version
+echo "Replace version in package.json and manifest.json"
 sed -i.bak -E 's/"version.*/"version": "'$version'",/' $package
 rm package.json.bak
+sed -i.bak -E 's/"version.*/"version": "'$version'",/' ../src/manifest.json
+rm ../src/manifest.json.bak
 
 # commit version change
 echo "Commit & Push package version change"
