@@ -30,4 +30,5 @@ module.exports = {
     }),
   ],
   mode: 'development',
+  devtool: 'source-map', // Enable sourcemaps for debugging webpack's output in a csp-compliant way
 };

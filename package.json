@@ -4,7 +4,8 @@
   "description": "An AI-powered quiz generator for any web page",
   "scripts": {
     "build": "rm -rf dist && webpack --mode production",
-    "dev": "webpack --mode development --watch"
+    "dev": "webpack --mode development",
+    "dev:watch": "webpack --mode development --watch"
   },
   "devDependencies": {
     "@types/canvas-confetti": "^1.9.0",

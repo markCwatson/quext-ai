@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Chrome with Built Extension",
+      "type": "chrome",
+      "request": "launch",
+      "webRoot": "${workspaceFolder}/dist", // Set to the folder with the built extension
+      "url": "https://en.wikipedia.org/wiki/Voyager_1",
+      "runtimeArgs": [
+        "--disable-extensions-except=${workspaceFolder}/dist", // Load the unpacked extension
+        "--load-extension=${workspaceFolder}/dist"            // Enable the extension from the dist folder
+      ],
+      "sourceMaps": true, // Enable source maps if your build process generates them
+      "skipFiles": ["<node_internals>/**"], // Skip internal Node.js modules when debugging
+      "trace": true, // Enable detailed logging for debugging issues
+      "preLaunchTask": "npm: build"
+    }
+  ]
+}
