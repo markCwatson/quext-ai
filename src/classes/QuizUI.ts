@@ -9,6 +9,7 @@ class QuizUI {
     DOMElements.quizAppContainer.style.display = 'flex';
     DOMElements.resultContainer.style.display = 'none';
     DOMElements.quizContainer.style.display = 'none';
+    DOMElements.audioBtn.style.display = 'none';
     DOMElements.feedback.style.display = 'none';
 
     DOMElements.generateQuizBtn.innerText = 'Generate Quiz';
@@ -78,6 +79,7 @@ class QuizUI {
     DOMElements.generateQuizBtn.style.display = 'none';
     DOMElements.feedback.style.display = 'none';
     DOMElements.quizContainer.style.display = 'none';
+    DOMElements.audioBtn.style.display = 'none';
     DOMElements.tryAgainBtn.style.display = 'block';
     DOMElements.resultContainer.style.display = 'flex';
     DOMElements.resultText.style.display = 'block';
@@ -101,6 +103,7 @@ class QuizUI {
   static showQuestion(question: any, answer: any) {
     DOMElements.questionText.innerText = question;
     DOMElements.quizContainer.style.display = 'block';
+    DOMElements.audioBtn.style.display = 'block';
     DOMElements.feedback.style.display = 'block';
     DOMElements.feedback.innerText = '';
     DOMElements.generateQuizBtn.style.display = 'none';

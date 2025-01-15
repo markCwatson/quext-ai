@@ -39,6 +39,36 @@ html, body {
   transform: rotate(360deg);
 }
 
+#play-audio-btn {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  padding: 0;   
+  border: none; 
+  background: transparent;
+  cursor: pointer;
+  transform: rotate(0deg);
+  transition: transform 0.1s linear;
+  display: flex;          
+  align-items: center;    
+  justify-content: center;
+}
+
+#play-audio-btn img {
+  padding: 0px;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+#play-audio-btn:hover {
+  transform: scale(1.2) rotate(22deg);
+}
+
+#play-audio-btn:active {
+  transform: scale(0.2) rotate(0deg);
+}
+
 .popup-container {
   width: 100%;
   height: 100%;
