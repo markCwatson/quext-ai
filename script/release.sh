@@ -10,6 +10,7 @@ fi
 
 # define package.json file absolute path
 package=`realpath ../package.json`
+manifest = `realpath ../public/manifest.json`
 
 # parse version from arguments
 version=`echo "$1" | sed -E 's|^.*([0-9]{1,2}.[0-9]{1,2}.[0-9]{1,2}$)|\1|'`
@@ -63,7 +64,7 @@ fi
 echo "Replace version in package.json and manifest.json"
 sed -i.bak -E 's/"version.*/"version": "'$version'",/' $package
 rm package.json.bak
-sed -i.bak -E 's/"version.*/"version": "'$version'",/' ../public/manifest.json
+sed -i.bak -E 's/"version.*/"version": "'$version'",/' $manifest
 rm ../public/manifest.json.bak
 
 # commit version change
