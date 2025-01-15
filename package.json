@@ -1,6 +1,6 @@
 {
   "name": "quext-ai",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "An AI-powered quiz generator for any web page",
   "scripts": {
     "build": "rm -rf dist && webpack --mode production",
