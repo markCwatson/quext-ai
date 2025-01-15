@@ -31,6 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+DOMElements.optionsBtn?.addEventListener('click', () => {
+  chrome.runtime.openOptionsPage(() => {
+    if (chrome.runtime.lastError) {
+      alert('Failed to open options page.');
+    }
+  });
+});
+
 DOMElements.openOptionsBtn?.addEventListener('click', () => {
   chrome.runtime.openOptionsPage(() => {
     if (chrome.runtime.lastError) {

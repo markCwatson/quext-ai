@@ -19,6 +19,7 @@ class DOMElements {
   static clearBtn = document.getElementById('clear')!;
   static openOptionsBtn = document.getElementById('open-options-btn');
   static resultContainer = document.getElementById('result-container')!;
+  static optionsBtn = document.getElementById('options-button')!;
 }
 
 export default DOMElements;
