@@ -82,6 +82,9 @@ git push origin $tag
 
 # zip contents of dist folder to release folder
 echo "Create a new release archive"
-zip -r ./release/$tag.zip ./dist
+rm -rf dist
+npm run build
+
+zip -r ./releases/$tag.zip ./dist
 
 echo "Release process completed"
