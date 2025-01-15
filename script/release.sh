@@ -63,8 +63,8 @@ fi
 echo "Replace version in package.json and manifest.json"
 sed -i.bak -E 's/"version.*/"version": "'$version'",/' $package
 rm package.json.bak
-sed -i.bak -E 's/"version.*/"version": "'$version'",/' ../src/manifest.json
-rm ../src/manifest.json.bak
+sed -i.bak -E 's/"version.*/"version": "'$version'",/' ../public/manifest.json
+rm ../public/manifest.json.bak
 
 # commit version change
 echo "Commit & Push package version change"
