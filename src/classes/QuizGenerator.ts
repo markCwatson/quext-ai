@@ -43,13 +43,15 @@ class QuizGenerator {
     }
 
     // Shuffle chunks and select up to 5
+    // \todo: make this configurable
     const randomChunks = chunks
       .sort(() => Math.random() - 0.5)
       .slice(0, Math.min(5, chunks.length));
 
-    const answer = Math.random() < 0.5 ? 'True' : 'False';
-
+      
     for (const chunk of randomChunks) {
+      let answer = Math.random() < 0.5 ? 'True' : 'False';
+
       try {
         const response = await fetch(
           'https://api.openai.com/v1/chat/completions',
