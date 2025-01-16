@@ -26,6 +26,7 @@ class DOMElements {
   static numberInput: HTMLInputElement;
   static btnBack: HTMLElement;
   static nextBtn: HTMLElement;
+  static seeFinalScoreBtn: HTMLElement;
 
   static initialize() {
     this.quizAppContainer = document.getElementById(
@@ -49,6 +50,10 @@ class DOMElements {
     this.modelSelect = document.getElementById('model') as HTMLInputElement;
     this.optionsForm = document.getElementById('options-form') as HTMLElement;
     this.nextBtn = document.getElementById('next-btn') as HTMLElement;
+
+    this.seeFinalScoreBtn = document.getElementById(
+      'see-final-score-btn',
+    ) as HTMLElement;
     this.optionsPrompt = document.getElementById(
       'setup-container',
     ) as HTMLElement;
@@ -60,17 +65,17 @@ class DOMElements {
       'result-container',
     ) as HTMLElement;
     this.optionsBtn = document.getElementById('options-button') as HTMLElement;
-
-    this.btn = document.querySelector('.btn') as HTMLElement;
     this.generateQuizBtn = document.getElementById(
       'generate-quiz-btn',
     ) as HTMLElement;
-    this.btnBack = document.querySelector('.btn-back') as HTMLElement;
-    this.btnSubmit = document.querySelector('.btn-back .submit') as HTMLElement;
-    this.btnCancel = document.querySelector('.btn-back .cancel') as HTMLElement;
     this.numberInput = document.querySelector(
       '.number-input',
     ) as HTMLInputElement;
+
+    this.btn = document.querySelector('.btn') as HTMLElement;
+    this.btnBack = document.querySelector('.btn-back') as HTMLElement;
+    this.btnSubmit = document.querySelector('.btn-back .submit') as HTMLElement;
+    this.btnCancel = document.querySelector('.btn-back .cancel') as HTMLElement;
   }
 }
 

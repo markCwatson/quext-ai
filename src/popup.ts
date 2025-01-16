@@ -101,16 +101,17 @@ document.addEventListener('DOMContentLoaded', () => {
   DOMElements.nextBtn?.addEventListener('click', async () => {
     QuizUI.clearFeedback();
     QuizUI.showBusyMessage();
-    QuizUI.resetButtons();
+    QuizUI.resetAnswerButtons();
 
-    console.log(QuizState.numberOfQuestions, QuizState.responses);
-
-    if (QuizState.numberOfQuestions > 0 && QuizState.responses.length == 0) {
-      QuizUI.showFinalScore();
+    if (
+      QuizState.getNumberOfQuestions() > 0 &&
+      QuizState.getResponses().length == 0
+    ) {
+      QuizUI.showFinalScoreButton();
       return;
     }
 
-    if (QuizState.numberOfQuestions > 0) {
+    if (QuizState.getNumberOfQuestions() > 0) {
       const next = QuizState.popResponse();
       if (next) QuizUI.showQuestion(next.question, next.answer);
       return;

@@ -34,6 +34,14 @@ class QuizState {
     this.numberOfQuestions = this.responses.length;
   }
 
+  static getResponses() {
+    return this.responses;
+  }
+
+  static getNumberOfQuestions() {
+    return this.numberOfQuestions;
+  }
+
   static popResponse() {
     return this.responses.pop();
   }
