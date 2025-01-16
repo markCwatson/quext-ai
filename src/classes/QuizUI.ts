@@ -11,6 +11,8 @@ class QuizUI {
     DOMElements.quizContainer.style.display = 'none';
     DOMElements.audioBtn.style.display = 'none';
     DOMElements.feedback.style.display = 'none';
+    DOMElements.nextBtn.style.display = 'none';
+    DOMElements.seeFinalScoreBtn.style.display = 'none';
 
     DOMElements.generateQuizBtn.innerText = 'Generate Quiz';
     DOMElements.tryAgainBtn.style.display = 'none';
@@ -51,7 +53,7 @@ class QuizUI {
     DOMElements.feedback.style.color = '#333';
   }
 
-  static resetButtons() {
+  static resetAnswerButtons() {
     DOMElements.trueBtn.disabled = false;
     DOMElements.falseBtn.disabled = false;
     DOMElements.trueBtn.classList.remove('correct');
@@ -59,6 +61,8 @@ class QuizUI {
   }
 
   static showSpinner() {
+    DOMElements.btn.style.display = 'none';
+    DOMElements.btnBack.style.display = 'none';
     DOMElements.generateQuizBtn.style.display = 'none';
     DOMElements.spinnerEl.style.display = 'block';
   }
@@ -73,31 +77,51 @@ class QuizUI {
   }
 
   static showFinalScore() {
-    DOMElements.scoreText.innerText = 'Final Score:';
-    DOMElements.scoreText.style.display = 'block';
-    DOMElements.scoreEl.style.display = 'block';
+    DOMElements.nextBtn.style.display = 'none';
     DOMElements.generateQuizBtn.style.display = 'none';
     DOMElements.feedback.style.display = 'none';
     DOMElements.quizContainer.style.display = 'none';
     DOMElements.audioBtn.style.display = 'none';
-    DOMElements.tryAgainBtn.style.display = 'block';
+    DOMElements.seeFinalScoreBtn.style.display = 'none';
+
     DOMElements.resultContainer.style.display = 'flex';
+    DOMElements.scoreText.style.display = 'block';
+    DOMElements.scoreEl.style.display = 'block';
+    DOMElements.tryAgainBtn.style.display = 'block';
     DOMElements.resultText.style.display = 'block';
-    DOMElements.resultText.innerText = `You answered ${QuizState.numberOfCorrectAnswers} out of ${QuizState.numberOfQuestions} questions correctly.`;
 
     DOMElements.tryAgainBtn.onclick = () => {
       this.init();
       QuizState.init();
       QuizState.updateScore();
-      DOMElements.generateQuizBtn.click();
+      DOMElements.nextBtn.click();
     };
   }
 
   static updateScoreUi() {
     DOMElements.scoreEl.textContent = QuizState.score.toString() + ' %';
     DOMElements.generateQuizBtn.style.display = 'block';
-    DOMElements.generateQuizBtn.innerText =
-      QuizState.responses.length > 0 ? 'Next Question' : 'Show Final Score';
+    DOMElements.scoreText.innerText = 'Final Score:';
+    DOMElements.resultText.innerText = `You answered ${QuizState.numberOfCorrectAnswers} out of ${QuizState.numberOfQuestions} questions correctly.`;
+  }
+
+  static showNextButton() {
+    if (QuizState.responses.length > 0) {
+      DOMElements.nextBtn.style.display = 'block';
+      DOMElements.nextBtn.innerText = 'Next Question';
+    } else {
+      DOMElements.nextBtn.style.display = 'none';
+      this.showFinalScoreButton();
+    }
+  }
+
+  static showFinalScoreButton() {
+    DOMElements.seeFinalScoreBtn.style.display = 'block';
+
+    DOMElements.seeFinalScoreBtn.onclick = () => {
+      this.updateScoreUi();
+      this.showFinalScore();
+    };
   }
 
   static showQuestion(question: any, answer: any) {
@@ -107,6 +131,8 @@ class QuizUI {
     DOMElements.feedback.style.display = 'block';
     DOMElements.feedback.innerText = '';
     DOMElements.generateQuizBtn.style.display = 'none';
+    DOMElements.nextBtn.style.display = 'none';
+    DOMElements.seeFinalScoreBtn.style.display = 'none';
 
     DOMElements.audioBtn.onclick = () => {
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -130,7 +156,7 @@ class QuizUI {
         : this.showAsIncorrect(DOMElements.trueBtn, 'False');
 
       QuizState.updateScore();
-      this.updateScoreUi();
+      this.showNextButton();
     };
 
     DOMElements.falseBtn.onclick = () => {
@@ -139,8 +165,19 @@ class QuizUI {
         : this.showAsIncorrect(DOMElements.falseBtn, 'True');
 
       QuizState.updateScore();
-      this.updateScoreUi();
+      this.showNextButton();
     };
+  }
+
+  static close() {
+    // close the extension
+    setTimeout(() => {
+      window.close();
+    }, 500);
+  }
+
+  static closeMaxNumQuestionsInputButton() {
+    DOMElements.btn?.classList.remove('is-open');
   }
 
   static playConfetti() {
