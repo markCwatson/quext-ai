@@ -169,11 +169,15 @@ class QuizUI {
     };
   }
 
-  static closeMaxNumQuestionsInputButton() {
+  static close() {
     // close the extension
     setTimeout(() => {
       window.close();
     }, 500);
+  }
+
+  static closeMaxNumQuestionsInputButton() {
+    DOMElements.btn?.classList.remove('is-open');
   }
 
   static playConfetti() {

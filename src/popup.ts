@@ -87,12 +87,20 @@ document.addEventListener('DOMContentLoaded', () => {
     },
   );
 
-  DOMElements.btnCancel?.addEventListener(
-    'click',
-    QuizUI.closeMaxNumQuestionsInputButton,
-  );
+  DOMElements.btnCancel?.addEventListener('click', QuizUI.close);
 
   DOMElements.btnSubmit?.addEventListener('click', () => {
+    const input = parseInt(DOMElements.numberInput.value);
+    if (input < 1) {
+      alert('Please enter a number greater than 0');
+      return;
+    }
+
+    if (input > 10) {
+      alert('Please enter a number less than 10');
+      return;
+    }
+
     QuizState.setMaxNumberOfQuestions(parseInt(DOMElements.numberInput.value));
     QuizUI.closeMaxNumQuestionsInputButton();
     DOMElements.nextBtn.click();
