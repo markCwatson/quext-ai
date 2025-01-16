@@ -8,12 +8,14 @@ class QuizState {
   static numberOfCorrectAnswers: number;
   static numberOfQuestions: number;
   static responses: IQuestionAndAnswer[];
+  static maxNumberOfQuestions: number;
 
   static init() {
     this.score = 0;
     this.numberOfCorrectAnswers = 0;
     this.numberOfQuestions = 0;
     this.responses = [];
+    this.maxNumberOfQuestions = 0;
   }
 
   static updateScore() {
@@ -34,6 +36,12 @@ class QuizState {
 
   static popResponse() {
     return this.responses.pop();
+  }
+
+  static setMaxNumberOfQuestions(num: number) {
+    this.maxNumberOfQuestions = num;
+    // for chrome runtime listeners which run in the background thus do not have access to QuizState
+    chrome.storage.sync.set({ maxNumberOfQuestions: num });
   }
 }
 

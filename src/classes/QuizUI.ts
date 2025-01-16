@@ -11,6 +11,7 @@ class QuizUI {
     DOMElements.quizContainer.style.display = 'none';
     DOMElements.audioBtn.style.display = 'none';
     DOMElements.feedback.style.display = 'none';
+    DOMElements.nextBtn.style.display = 'none';
 
     DOMElements.generateQuizBtn.innerText = 'Generate Quiz';
     DOMElements.tryAgainBtn.style.display = 'none';
@@ -59,6 +60,8 @@ class QuizUI {
   }
 
   static showSpinner() {
+    DOMElements.btn.style.display = 'none';
+    DOMElements.btnBack.style.display = 'none';
     DOMElements.generateQuizBtn.style.display = 'none';
     DOMElements.spinnerEl.style.display = 'block';
   }
@@ -73,16 +76,18 @@ class QuizUI {
   }
 
   static showFinalScore() {
-    DOMElements.scoreText.innerText = 'Final Score:';
-    DOMElements.scoreText.style.display = 'block';
-    DOMElements.scoreEl.style.display = 'block';
+    DOMElements.nextBtn.style.display = 'none';
     DOMElements.generateQuizBtn.style.display = 'none';
     DOMElements.feedback.style.display = 'none';
     DOMElements.quizContainer.style.display = 'none';
     DOMElements.audioBtn.style.display = 'none';
-    DOMElements.tryAgainBtn.style.display = 'block';
+
     DOMElements.resultContainer.style.display = 'flex';
+    DOMElements.scoreText.style.display = 'block';
+    DOMElements.scoreEl.style.display = 'block';
+    DOMElements.tryAgainBtn.style.display = 'block';
     DOMElements.resultText.style.display = 'block';
+    DOMElements.scoreText.innerText = 'Final Score:';
     DOMElements.resultText.innerText = `You answered ${QuizState.numberOfCorrectAnswers} out of ${QuizState.numberOfQuestions} questions correctly.`;
 
     DOMElements.tryAgainBtn.onclick = () => {
@@ -96,8 +101,15 @@ class QuizUI {
   static updateScoreUi() {
     DOMElements.scoreEl.textContent = QuizState.score.toString() + ' %';
     DOMElements.generateQuizBtn.style.display = 'block';
-    DOMElements.generateQuizBtn.innerText =
-      QuizState.responses.length > 0 ? 'Next Question' : 'Show Final Score';
+
+    // \todo: all this is messed up
+    if (QuizState.responses.length > 0) {
+      DOMElements.nextBtn.style.display = 'block';
+      DOMElements.nextBtn.innerText = 'Next Question';
+    } else {
+      DOMElements.nextBtn.style.display = 'none';
+      DOMElements.nextBtn.innerText = 'Show Final Score';
+    }
   }
 
   static showQuestion(question: any, answer: any) {
@@ -141,6 +153,13 @@ class QuizUI {
       QuizState.updateScore();
       this.updateScoreUi();
     };
+  }
+
+  static closeMaxNumQuestionsInputButton() {
+    DOMElements.numberInput.value = '';
+    DOMElements.btn?.classList.remove('is-open');
+    DOMElements.btn.style.display = 'none';
+    DOMElements.btnBack.style.display = 'none';
   }
 
   static playConfetti() {

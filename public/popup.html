@@ -10,8 +10,8 @@
       <button id="play-audio-btn">
         <img src="./icons/ear.svg" alt="tts" />
       </button>
-      
-      <button id="options-button" >
+
+      <button id="options-button">
         <img src="./icons/cog.svg" alt="options" />
       </button>
 
@@ -20,15 +20,40 @@
 
       <div id="setup-container">
         <h2>Setup is required...</h2>
-        <h3>Right-click the extension icon and select "Options" or click the "Open Options" button below.</h3>
-        <h3>Go to the options page to set up your OpenAI API key and select a model (uses gpt-4o-mini by default).</h3>
+        <h3>
+          Right-click the extension icon and select "Options" or click the "Open
+          Options" button below.
+        </h3>
+        <h3>
+          Go to the options page to set up your OpenAI API key and select a
+          model (uses gpt-4o-mini by default).
+        </h3>
         <h2>They key is not stored or shared with anyone.</h2>
         <button id="open-options-btn">Open Options</button>
       </div>
 
       <div id="quiz-app-container">
-        <button id="generate-quiz-btn"></button>
+        <div class="btn">
+          <div class="btn-back">
+            <p>Enter max number of questions:</p>
+            <div class="input-wrapper">
+              <input
+                type="number"
+                min="0"
+                max="10"
+                step="1"
+                value="3"
+                class="number-input"
+              />
+              <button class="submit">Submit</button>
+              <button class="cancel">Cancel</button>
+            </div>
+          </div>
+          <div id="generate-quiz-btn">Generate</div>
+        </div>
         <div id="html-spinner"></div>
+
+        <div id="next-btn">Next</div>
 
         <div id="quiz-container">
           <p id="question-text"></p>
@@ -39,7 +64,7 @@
         <div id="result-container">
           <div class="score-container">
             <h2 id="score-text"></h2>
-            <p id="score">0</p>
+            <p id="score"></p>
           </div>
           <h2 id="result-text"></h2>
           <button id="try-again-btn">Try Again</button>

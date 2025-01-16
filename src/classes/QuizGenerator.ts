@@ -1,3 +1,5 @@
+import QuizState, { IQuestionAndAnswer } from './QuizState';
+
 class QuizGenerator {
   static get DEFAULT_MODEL(): string {
     return 'gpt-4o-mini';
@@ -5,6 +7,7 @@ class QuizGenerator {
 
   static apikey: string | null = null;
   static model: string = this.DEFAULT_MODEL;
+  static maxNumberOfQuestions = 3;
 
   static setApiKey(apikey: string | null): void {
     this.apikey = apikey;
@@ -14,10 +17,12 @@ class QuizGenerator {
     this.model = model;
   }
 
+  static setMaxNumberOfQuestions(num: number): void {
+    this.maxNumberOfQuestions = num;
+  }
+
   // for testing to avoid calling the open ai api too much
-  static fetchQuizMock(
-    chunks: string[],
-  ): Promise<{ question: string; answer: string }[]> {
+  static fetchQuizMock(chunks: string[]): Promise<IQuestionAndAnswer[]> {
     return new Promise((resolve) => {
       resolve([
         {
@@ -32,23 +37,20 @@ class QuizGenerator {
     });
   }
 
-  static async fetchQuiz(
-    chunks: string[],
-  ): Promise<{ question: string; answer: string }[]> {
-    const responses: { question: string; answer: string }[] = [];
+  static async fetchQuiz(chunks: string[]): Promise<IQuestionAndAnswer[]> {
+    const responses: IQuestionAndAnswer[] = [];
 
     if (!this.apikey) {
+      console.log('API key not set! Go to the options page to set it.');
       alert('API key not set! Go to the options page to set it.');
       return responses;
     }
 
-    // Shuffle chunks and select up to 5
-    // \todo: make this configurable
+    // Shuffle chunks and select up to maxNumberOfQuestions
     const randomChunks = chunks
       .sort(() => Math.random() - 0.5)
-      .slice(0, Math.min(5, chunks.length));
+      .slice(0, Math.min(this.maxNumberOfQuestions, chunks.length));
 
-      
     for (const chunk of randomChunks) {
       let answer = Math.random() < 0.5 ? 'True' : 'False';
 
