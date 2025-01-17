@@ -130,6 +130,7 @@ class QuizUI {
     DOMElements.audioBtn.style.display = 'block';
     DOMElements.feedback.style.display = 'block';
     DOMElements.feedback.innerText = '';
+    DOMElements.btn.style.display = 'none';
     DOMElements.generateQuizBtn.style.display = 'none';
     DOMElements.nextBtn.style.display = 'none';
     DOMElements.seeFinalScoreBtn.style.display = 'none';

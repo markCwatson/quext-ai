@@ -28,6 +28,11 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
         chrome.action.setBadgeText({ text: '1' });
         chrome.action.setBadgeBackgroundColor({ color: '#4CAF50' });
+
+        // close popup: \toso: this doesn't work??
+        // setTimeout(() => {
+        //   chrome.action.setPopup({ tabId: tab.id, popup: '' });
+        // }, 200);
       },
     );
   }
