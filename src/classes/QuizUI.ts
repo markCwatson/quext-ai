@@ -25,6 +25,27 @@ class QuizUI {
   static showOptionsPrompt() {
     DOMElements.optionsPrompt.style.display = 'block';
     DOMElements.quizAppContainer.style.display = 'none';
+    DOMElements.audioBtn.style.display = 'block';
+
+    DOMElements.audioBtn.onclick = () => {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        const activeTab = tabs[0];
+        if (!activeTab?.id) return;
+
+        const text = `Setup is required before quext ay I can be used.\
+        Go to the options page to set up your open ay I key. \
+        The key is NEVER stored or shared with anyone!`;
+
+        chrome.tabs.sendMessage(
+          activeTab.id,
+          { type: 'fetchAudio', text },
+          (response) => {
+            if (!response || !response.success)
+              alert('No response from fetchAudio');
+          },
+        );
+      });
+    };
   }
 
   static showAsCorrectByButton(btn: HTMLButtonElement) {
@@ -65,6 +86,7 @@ class QuizUI {
     DOMElements.btnBack.style.display = 'none';
     DOMElements.generateQuizBtn.style.display = 'none';
     DOMElements.spinnerEl.style.display = 'block';
+    DOMElements.audioBtn.style.display = 'none';
   }
 
   static hideSpinner() {

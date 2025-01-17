@@ -4,24 +4,27 @@
     <title>Quext AI Options</title>
     <link rel="stylesheet" href="options.css" />
   </head>
-<body>
-  <h1>Quext AI Options: Setup for use of OpenAI API</h1>
-  <form id="options-form">
-    <label for="api-key">OpenAI API Key:</label>
-    <input type="text" id="api-key" />
-    <br />
-    <label for="model">Model:</label>
-    <select id="model">
-      <option value="gpt-4o-mini">gpt-4o-mini</option>
-      <option value="gpt-4o">gpt-4o</option>
-      <option value="o1">o1</option>
-      <option value="o1-mini">o1-mini</option>
-      <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
-    </select>
-    <br />
-    <button type="submit">Save</button>
-    <button type="button" id="clear">Clear</button>
-  </form>
-  <script src="options.js"></script>
-</body>
+  <body>
+    <div class="options-container">
+      <h1>Quext AI Options</h1>
+      <h2>Setup requires an OpenAI API key</h2>
+      <form id="options-form">
+        <label for="api-key">OpenAI API Key:</label>
+        <input type="text" id="api-key" />
+        <br />
+        <label for="model">Select OpenAI Model:</label>
+        <select id="model">
+          <option value="gpt-4o-mini">gpt-4o-mini</option>
+          <option value="gpt-4o">gpt-4o</option>
+          <option value="o1">o1</option>
+          <option value="o1-mini">o1-mini</option>
+          <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+        </select>
+        <br />
+        <button type="submit">Save</button>
+        <button type="button" id="clear">Clear</button>
+      </form>
+    </div>
+    <script src="options.js"></script>
+  </body>
 </html>

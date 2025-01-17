@@ -115,6 +115,8 @@ body {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  font-family: sans-serif;
+  margin: 0 0 10px 0;
 }
 
 #setup-container h2 {
@@ -122,14 +124,14 @@ body {
   color: #007bff;
   font-weight: bold;
   text-align: center;
-  margin-bottom: 10px;
+  margin: 0px 0px 10px 0px;
 }
 
 #setup-container h3 {
   font-size: 0.8rem;
-  color: #444;
-  text-align: center;
-  margin-bottom: 10px;
+  margin: 0px 0px 10px 0px;
+  padding: 5px 5px 0px 5px;
+  color: #555;
 }
 
 #open-options-btn {
@@ -141,6 +143,11 @@ body {
   padding: 8px 16px;
   font-size: 0.9rem;
   cursor: pointer;
+}
+
+#open-options-btn:hover {
+  background-color: #0056b3;
+  animation: sparkle 2s infinite ease-in-out;
 }
 
 @keyframes sparkle {
@@ -323,6 +330,11 @@ body {
   padding: 8px 16px;
   font-size: 0.9rem;
   cursor: pointer;
+}
+
+#try-again-btn:hover {
+  background-color: #0056b3;
+  animation: sparkle 2s infinite ease-in-out;
 }
 
 .score-container {
